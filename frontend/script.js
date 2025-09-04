@@ -1,6 +1,9 @@
-const map = L.map("map").setView([18.805, -71.229], 14);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "© OpenStreetMap"
+// Inicializa el mapa (ajusta la vista según tu zona)
+const map = L.map('map').setView([18.80823, -71.22503], 13);
+
+// Agrega el mapa base
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
 let bloqueado = false;
@@ -18,7 +21,12 @@ function mostrarEnMapa() {
   markers = [];
   farmacias.forEach(f => {
     const marker = L.marker(f.coords).addTo(map).bindPopup(f.nombre);
-    const circle = L.circle(f.coords, { radius: f.radio, color: "blue", fillOpacity: 0.1 }).addTo(map);
+    const circle = L.circle(f.coords, { 
+      radius: f.radio, 
+      color: f.color || "blue", // Usa el color de la farmacia
+      fillColor: f.color || "blue",
+      fillOpacity: 0.4 
+    }).addTo(map);
     markers.push(marker, circle);
   });
 }
