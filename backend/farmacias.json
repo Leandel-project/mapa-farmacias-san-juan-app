@@ -1,0 +1,5 @@
+[
+  { "id": 1, "nombre": "Farmacia Kaymarie", "coords": [18.80358, -71.24664], "radio": 600 },
+  { "id": 2, "nombre": "Farma Value", "coords": [18.79616, -71.22450], "radio": 600 },
+  { "id": 3, "nombre": "Farmacia Dorisfanny", "coords": [18.79673, -71.22925], "radio": 600 }
+]

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa de Farmacias San Juan</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <div id="menu">
+    <h2>Mapa de Farmacias San Juan</h2>
+    <input type="text" id="buscador" placeholder="Buscar farmacia...">
+    <button onclick="mostrarLista()">📋 Ver lista</button>
+    <button onclick="centrarSanJuan()">📍 San Juan</button>
+    <button onclick="toggleBloqueo()">🔒 Bloquear Vista</button>
+  </div>
+
+  <div id="panel" class="hidden">
+    <h3>Lista de farmacias</h3>
+    <ul id="listaFarmacias"></ul>
+    <h3>Agregar nueva</h3>
+    <input id="nuevoNombre" placeholder="Nombre">
+    <input id="nuevoLat" placeholder="Latitud">
+    <input id="nuevoLng" placeholder="Longitud">
+    <input id="nuevoRadio" placeholder="Radio (m)" value="600">
+    <button onclick="agregarFarmacia()">➕ Agregar</button>
+    <button onclick="cerrarPanel()">❌ Cerrar</button>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+#map {
+  height: 100%;
+  width: calc(100% - 250px);
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#menu {
+  width: 250px;
+  height: 100%;
+  background: #f8f8f8;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
+
+#panel {
+  position: absolute;
+  left: 250px;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  border-left: 1px solid #ccc;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+button {
+  display: block;
+  margin: 5px 0;
+  padding: 6px;
+  width: 100%;
+  cursor: pointer;
+}
