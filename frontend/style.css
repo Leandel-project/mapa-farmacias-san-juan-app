@@ -1,50 +1,179 @@
+/* --- Reset y fuente base --- */
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f4f6fb;
 }
 
+/* --- Estilos del mapa --- */
 #map {
   height: 100%;
-  width: calc(100% - 250px);
+  width: calc(100% - 270px); /* El mapa ocupa el espacio restante al menú */
   position: absolute;
   right: 0;
   top: 0;
 }
 
+/* --- Menú lateral principal --- */
 #menu {
-  width: 250px;
+  width: 270px; /* Ancho del menú lateral */
   height: 100%;
-  background: #f8f8f8;
-  border-right: 1px solid #ccc;
-  padding: 10px;
+  background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+  border-right: none;
+  box-shadow: 2px 0 12px rgba(58,123,213,0.08); /* Sombra lateral */
+  padding: 24px 18px; /* Espaciado interno */
   position: absolute;
   left: 0;
   top: 0;
   overflow-y: auto;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
+/* --- Título del menú --- */
+#menu h2 {
+  font-size: 1.6em;
+  font-weight: 700;
+  margin-bottom: 18px;
+  letter-spacing: 1px;
+}
+
+/* --- Buscador en el menú --- */
+#menu input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Botones del menú --- */
+#menu button {
+  background: #fff;
+  color: #3a7bd5;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+  width: 90%;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(58,123,213,0.08);
+  transition: background 0.2s, color 0.2s;
+  margin: 6px 0;
+  padding: 10px;
+  cursor: pointer;
+}
+#menu button:hover {
+  background: #3a7bd5;
+  color: #fff;
+}
+
+/* --- Panel flotante para la lista de farmacias --- */
 #panel {
   position: absolute;
-  left: 250px;
-  top: 0;
-  width: 300px;
-  height: 100%;
+  top: 60px;
+  left: 40px;
+  width: 340px;
   background: #fff;
-  border-left: 1px solid #ccc;
-  padding: 10px;
-  overflow-y: auto;
+  border-radius: 16px;
+  border: none;
+  z-index: 1000;
+  padding: 24px 20px;
+  box-shadow: 0 4px 24px rgba(58,123,213,0.15);
+  animation: fadeIn 0.3s;
 }
 
+/* --- Animación de aparición del panel --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/* --- Título del panel --- */
+#panel h3 {
+  margin-top: 0;
+  font-size: 1.2em;
+  color: #3a7bd5;
+  font-weight: 700;
+}
+
+/* --- Lista de farmacias en el panel --- */
+#listaFarmacias {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+}
+
+/* --- Elementos de la lista de farmacias --- */
+#listaFarmacias li {
+  background: #f4f6fb;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #333;
+  font-size: 1em;
+  box-shadow: 0 1px 4px rgba(58,123,213,0.05);
+}
+
+/* --- Botones dentro del panel --- */
+#panel button {
+  background: #3a7bd5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+  box-shadow: 0 2px 8px rgba(58,123,213,0.08);
+  transition: background 0.2s, color 0.2s;
+  margin: 6px 0;
+  padding: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+#panel button:hover {
+  background: #00d2ff;
+  color: #3a7bd5;
+}
+
+/* --- Inputs y selects generales --- */
+input, select {
+  font-family: inherit;
+}
+
+/* --- Clase para ocultar elementos --- */
 .hidden {
   display: none;
 }
 
-button {
-  display: block;
-  margin: 5px 0;
-  padding: 6px;
-  width: 100%;
-  cursor: pointer;
+/* --- Contenedor de botones del menú --- */
+.menu-botones {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
+
+/* --- Botones dentro del contenedor de botones del menú --- */
+.menu-botones button {
+  width: 100%;
+  margin: 0;
+  padding: 12px 0;
+  font-size: 1.05em;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(58,123,213,0.08);
+  transition: background 0.2s, color 0.2s;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: block;
+  box-sizing: border-box;
+}
+.menu-botones button:hover {
+  background: #3a7bd5;
+  color: #fff;
+};
