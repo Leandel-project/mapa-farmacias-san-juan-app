@@ -4,17 +4,17 @@ body, html {
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
-    overflow: hidden; /* Evita que la página tenga scroll */
+    overflow: hidden; /* Evita el scroll en la página */
 }
 
-/* El mapa ocupará todo el espacio disponible */
+/* El mapa ocupará todo el espacio disponible en el fondo */
 #map {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1;
+    z-index: 1; /* Asegura que el mapa esté en el fondo */
 }
 
 /* El sidebar (menú lateral) se posiciona en la izquierda */
