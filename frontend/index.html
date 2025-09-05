@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa de Farmacias San Juan</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -17,13 +18,13 @@
     </div>
   </div>
 
-  <div id="panel" class="hidden">
-    <h3>Lista de farmacias</h3>
-    <ul id="listaFarmacias"></ul>
-    <button onclick="cerrarPanel()">❌ Cerrar</button>
-  </div>
-
   <div id="map"></div>
+
+  <!-- Pie de página moderno -->
+  <footer id="footer">
+    <span>© 2025 Mapa de Farmacias San Juan</span>
+    <span class="footer-leandel">Leandel</span>
+  </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
