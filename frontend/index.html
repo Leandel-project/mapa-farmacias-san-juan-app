@@ -9,32 +9,56 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="sidebar">
-    <button id="toggleSidebar">☰</button>
-    <h2>Mapa de Farmacias de San Juan</h2>
-    <input type="text" id="search" placeholder="Buscar farmacia...">
-    <button id="btnBuscar">Buscar</button>
-    <hr>
-    <button id="btnLista">📋 Lista de Farmacias</button>
-    <button id="btnBloquear">🔒 Bloquear Vista</button>
-    <button id="btnZoomIn">➕ Zoom +</button>
-    <button id="btnZoomOut">➖ Zoom -</button>
-  </div>
+<!-- Botón hamburguesa fuera del sidebar, siempre visible -->
+<button id="toggleSidebar" style="position:fixed; top:10px; left:10px; z-index:2000; background:#007bff; color:white; border:none; border-radius:5px; padding:10px; cursor:pointer;">☰</button>
 
+<!-- Sidebar -->
+<div id="sidebar">
+  <h2>Mapa de Farmacias de San Juan</h2>
+  <input type="text" id="search" placeholder="Buscar farmacia...">
+  <button id="btnBuscar">Buscar</button>
+  <hr>
+  <button id="btnLista">📋 Lista de Farmacias</button>
+  <button id="btnBloquear">🔒 Bloquear Vista</button>
+</div>
+
+  <!-- Mapa -->
   <div id="map"></div>
 
+  <!-- Backdrop -->
   <div id="modal-backdrop" class="hidden"></div>
 
+  <!-- Modal -->
   <div id="modal-window" class="hidden">
     <div class="modal-content">
       <span class="close-btn">&times;</span>
       <div>
-        <h3>Lista de Farmacias</h3>
+        <h3>Gestión de Farmacias</h3>
+              <h3>Agregar / Editar Farmacia</h3>
+        <!-- Formulario Agregar/Editar -->
+        <form id="farmaciaForm">
+          <input type="hidden" id="farmaciaId">
+          <label>Nombre:</label>
+          <input type="text" id="farmaciaNombre" required>
+          <label>Latitud:</label>
+          <input type="number" step="any" id="farmaciaLat" required>
+          <label>Longitud:</label>
+          <input type="number" step="any" id="farmaciaLng" required>
+          <label>Radio (m):</label>
+          <input type="number" id="farmaciaRadio" required>
+          <label>Color:</label>
+          <input type="text" id="farmaciaColor" required>
+          <button type="submit">Guardar</button>
+        </form>
+
+        <!-- Lista de Farmacias -->
+          <h3>Lista de Farmacias</h3>
         <ul id="listaFarmacias"></ul>
       </div>
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
