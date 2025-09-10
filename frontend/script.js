@@ -87,6 +87,9 @@ function actualizarLista() {
       Lat: ${f.coords[0]}, Lng: ${f.coords[1]}<br>
       Radio: ${f.radio} m`;
 
+    li.appendChild(checkbox);
+    li.appendChild(label);
+
     const editBtn = document.createElement('button');
     editBtn.textContent = "Editar";
     editBtn.className = "editar-btn";
@@ -103,8 +106,6 @@ function actualizarLista() {
       }
     });
 
-    li.appendChild(checkbox);
-    li.appendChild(label);
     li.appendChild(editBtn);
     li.appendChild(delBtn);
 
@@ -148,55 +149,6 @@ async function eliminarFarmacia(id) {
     alert('No se pudo eliminar la farmacia.');
   }
 }
-
-// Event listeners DOM-ready
-// Unificamos toda la inicialización aquí
-document.addEventListener('DOMContentLoaded', () => {
-  // botones UI
-  // Botones y modal
-  const btnLista = document.getElementById('btnLista');
-  const closeBtn = document.querySelector('.close-btn');
-  const backdrop = document.getElementById('modal-backdrop');
-  const lista = document.getElementById('listaFarmacias');
-
-  if (btnLista) btnLista.addEventListener('click', abrirModal);
-  if (closeBtn) closeBtn.addEventListener('click', cerrarModal);
-  if (backdrop) backdrop.addEventListener('click', cerrarModal);
-
-  // delegado para boton eliminar dentro de la lista
-  // Botón hamburguesa para el sidebar
-  const toggleSidebar = document.getElementById('toggleSidebar');
-  const sidebar = document.getElementById('sidebar');
-  if (toggleSidebar && sidebar) {
-    toggleSidebar.addEventListener('click', () => {
-      sidebar.classList.toggle('hidden');
-    });
-  }
-
-  // OPTIMIZACIÓN: Delegación de eventos para la lista de farmacias
-  const lista = document.getElementById('listaFarmacias');
-  if (lista) {
-    lista.addEventListener('click', async (e) => {
-      const item = e.target.closest('.farmacia-item');
-      if (!item) return;
-      const id = Number(item.dataset.id);
-      const farmacia = farmacias.find(f => f.id === id);
-
-      if (e.target.classList.contains('eliminar-btn')) {
-        const id = e.target.closest('.farmacia-item').dataset.id;
-        if (confirm(`¿Eliminar farmacia ID ${id}?`)) {
-        if (confirm(`¿Eliminar farmacia "${farmacia.nombre}"?`)) {
-          await eliminarFarmacia(id);
-        }
-      } else if (e.target.classList.contains('editar-btn')) {
-        abrirFormularioEdicion(farmacia);
-      }
-    });
-  }
-
-  // inicializar carga
-  cargarFarmacias();
-})
 
 // Abrir formulario en modo edición
 function abrirFormularioEdicion(f) {
@@ -263,17 +215,32 @@ async function guardarFarmacia(e) {
   }
 }
 
-document.getElementById("farmaciaForm").addEventListener("submit", guardarFarmacia);
-
-// Toggle del sidebar (botón hamburguesa)
+// Event listeners DOM-ready
 document.addEventListener('DOMContentLoaded', () => {
+  // Botones y modal
+  const btnLista = document.getElementById('btnLista');
+  const closeBtn = document.querySelector('.close-btn');
+  const backdrop = document.getElementById('modal-backdrop');
+
+  if (btnLista) btnLista.addEventListener('click', abrirModal);
+  if (closeBtn) closeBtn.addEventListener('click', cerrarModal);
+  if (backdrop) backdrop.addEventListener('click', cerrarModal);
+
+  // Botón hamburguesa para el sidebar
   const toggleSidebar = document.getElementById('toggleSidebar');
   const sidebar = document.getElementById('sidebar');
+  if (toggleSidebar && sidebar) {
+    toggleSidebar.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+    });
+  }
 
-  toggleSidebar.addEventListener('click', () => {
-    sidebar.classList.toggle('hidden'); // oculta / muestra el sidebar
-  });
-})
+  // Formulario
+  document.getElementById("farmaciaForm").addEventListener("submit", guardarFarmacia);
+
+  // inicializar carga
+  cargarFarmacias();
+});
 
 // Coordenadas de San Juan de la Maguana
 const sanJuan = [18.8059, -71.2299];
@@ -286,12 +253,6 @@ btnBloquear.addEventListener('click', () => {
     // BLOQUEAR: centrar en San Juan y limitar límites del mapa
     map.setView(sanJuan, 14);
 
-    // Limites aproximados de San Juan
-    const bounds = L.latLngBounds(
-      [18.78, -71.27], // suroeste
-      [18.83, -71.19]  // noreste
-    );
-    map.setMaxBounds(bounds);
     map.setMaxBounds(sanJuanBounds);
 
     // Limitar zoom máximo y mínimo si quieres
@@ -370,6 +331,3 @@ map.on('click', function(e) {
     }
   });
 });
-
-// Inicializar carga
-cargarFarmacias();

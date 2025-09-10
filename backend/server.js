@@ -36,6 +36,11 @@ app.post('/farmacias', async (req, res) => {
     const farmacias = await readFarmacias();
     const nuevaFarmacia = req.body;
 
+    // --- VALIDACIÓN BÁSICA ---
+    if (!nuevaFarmacia.nombre || !Array.isArray(nuevaFarmacia.coords) || nuevaFarmacia.coords.length !== 2) {
+      return res.status(400).json({ error: 'Datos inválidos. Se requiere un nombre y coordenadas válidas.' });
+    }
+
     // Asignar un nuevo ID (el máximo ID existente + 1)
     const nuevoId = farmacias.length ? Math.max(...farmacias.map(f => f.id)) + 1 : 1;
     nuevaFarmacia.id = nuevoId;
@@ -55,6 +60,11 @@ app.put('/farmacias/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
     const farmaciaActualizada = req.body;
+    // --- VALIDACIÓN BÁSICA ---
+    if (!farmaciaActualizada.nombre || !Array.isArray(farmaciaActualizada.coords) || farmaciaActualizada.coords.length !== 2) {
+      return res.status(400).json({ error: 'Datos inválidos. Se requiere un nombre y coordenadas válidas.' });
+    }
+
     let farmacias = await readFarmacias();
     const index = farmacias.findIndex(f => f.id === id);
     if (index === -1) {
