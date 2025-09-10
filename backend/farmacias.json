@@ -1,25 +1,242 @@
- [
-  { "id": 1,  "nombre": "Farmacia MELIDA", "coords": [18.80823, -71.22503], "radio": 600, "color": "red" },
-  { "id": 2,  "nombre": "SUPER FARMACIA SILDIA", "coords": [18.80234, -71.22298], "radio": 600, "color": "blue" },
-  { "id": 3,  "nombre": "Farmacia CABAPO", "coords": [18.80997, -71.24451], "radio": 600, "color": "green" },
-  { "id": 4,  "nombre": "Farmacia SEGURA", "coords": [18.80727, -71.24892], "radio": 600, "color": "purple" },
-  { "id": 5,  "nombre": "Farmacia Kaymarie", "coords": [18.80358, -71.24664], "radio": 600, "color": "orange" },
-  { "id": 6,  "nombre": "Farma Value", "coords": [18.79616, -71.22450], "radio": 600, "color": "brown" },
-  { "id": 7,  "nombre": "Farmacia Dorisfanny", "coords": [18.79673, -71.22925], "radio": 600, "color": "teal" },
-  { "id": 8,  "nombre": "Farmacia Farmasur Tata", "coords": [18.80126, -71.22949], "radio": 600, "color": "magenta" },
-  { "id": 9,  "nombre": "Súper Farmacia Casado", "coords": [18.80373, -71.23491], "radio": 600, "color": "cyan" },
-  { "id": 10, "nombre": "Farmacia Del Pueblo", "coords": [18.80300, -71.22452], "radio": 600, "color": "gold" },
-  { "id": 11, "nombre": "Farmacia Mélida", "coords": [18.80283, -71.22543], "radio": 600, "color": "darkgreen" },
-  { "id": 12, "nombre": "Farmacia El Carmen", "coords": [18.80652, -71.23344], "radio": 600, "color": "darkred" },
-  { "id": 13, "nombre": "Farmacia Fatima Cristina", "coords": [18.80636, -71.23127], "radio": 600, "color": "navy" },
-  { "id": 14, "nombre": "Farmacia Inmaculada", "coords": [18.80634, -71.23019], "radio": 600, "color": "olive" },
-  { "id": 15, "nombre": "Farmacia Buttén", "coords": [18.80633, -71.22965], "radio": 600, "color": "maroon" },
-  { "id": 16, "nombre": "Farmacia GBC San Juan 2", "coords": [18.80675, -71.22980], "radio": 600, "color": "chocolate" },
-  { "id": 17, "nombre": "Farmacia San Martin", "coords": [18.80757, -71.22903], "radio": 600, "color": "deeppink" },
-  { "id": 18, "nombre": "Farmacia Carol", "coords": [18.80629, -71.22935], "radio": 600, "color": "slateblue" },
-  { "id": 19, "nombre": "Farmacia Binet", "coords": [18.80872, -71.23133], "radio": 600, "color": "tomato" },
-  { "id": 20, "nombre": "Farmacia Iguamed", "coords": [18.80766, -71.22706], "radio": 600, "color": "seagreen" },
-  { "id": 21, "nombre": "Farmacia Anacaona", "coords": [18.81307, -71.23144], "radio": 600, "color": "dodgerblue" },
-  { "id": 22, "nombre": "Farmacia Medicar GBC San Juan de la Maguana", "coords": [18.81693, -71.22672], "radio": 600, "color": "crimson" },
-  { "id": 23, "nombre": "Farmacia Eddy", "coords": [18.81136, -71.21990], "radio": 600, "color": "darkorange" }
+[
+  {
+    "id": 1,
+    "nombre": "Farmacia MELIDA",
+    "coords": [
+      18.80823,
+      -71.22503
+    ],
+    "radio": 600,
+    "color": "red"
+  },
+  {
+    "id": 2,
+    "nombre": "SUPER FARMACIA SILDIA",
+    "coords": [
+      18.80234,
+      -71.22298
+    ],
+    "radio": 600,
+    "color": "blue"
+  },
+  {
+    "id": 3,
+    "nombre": "Farmacia CABAPO",
+    "coords": [
+      18.80997,
+      -71.24451
+    ],
+    "radio": 600,
+    "color": "green"
+  },
+  {
+    "id": 4,
+    "nombre": "Farmacia SEGURA",
+    "coords": [
+      18.80727,
+      -71.24892
+    ],
+    "radio": 600,
+    "color": "purple"
+  },
+  {
+    "id": 5,
+    "nombre": "Farmacia Kaymarie",
+    "coords": [
+      18.80358,
+      -71.24664
+    ],
+    "radio": 600,
+    "color": "orange"
+  },
+  {
+    "id": 6,
+    "nombre": "Farma Value",
+    "coords": [
+      18.79616,
+      -71.2245
+    ],
+    "radio": 600,
+    "color": "brown"
+  },
+  {
+    "id": 7,
+    "nombre": "Farmacia Dorisfanny",
+    "coords": [
+      18.79673,
+      -71.22925
+    ],
+    "radio": 600,
+    "color": "teal"
+  },
+  {
+    "id": 8,
+    "nombre": "Farmacia Farmasur Tata",
+    "coords": [
+      18.80126,
+      -71.22949
+    ],
+    "radio": 600,
+    "color": "magenta"
+  },
+  {
+    "id": 9,
+    "nombre": "Súper Farmacia Casado",
+    "coords": [
+      18.80373,
+      -71.23491
+    ],
+    "radio": 600,
+    "color": "cyan"
+  },
+  {
+    "id": 10,
+    "nombre": "Farmacia Del Pueblo",
+    "coords": [
+      18.803,
+      -71.22452
+    ],
+    "radio": 600,
+    "color": "gold"
+  },
+  {
+    "id": 11,
+    "nombre": "Farmacia Mélida",
+    "coords": [
+      18.80283,
+      -71.22543
+    ],
+    "radio": 600,
+    "color": "darkgreen"
+  },
+  {
+    "id": 12,
+    "nombre": "Farmacia El Carmen",
+    "coords": [
+      18.80652,
+      -71.23344
+    ],
+    "radio": 600,
+    "color": "darkred"
+  },
+  {
+    "id": 13,
+    "nombre": "Farmacia Fatima Cristina",
+    "coords": [
+      18.80636,
+      -71.23127
+    ],
+    "radio": 600,
+    "color": "navy"
+  },
+  {
+    "id": 14,
+    "nombre": "Farmacia Inmaculada",
+    "coords": [
+      18.80634,
+      -71.23019
+    ],
+    "radio": 600,
+    "color": "olive"
+  },
+  {
+    "id": 15,
+    "nombre": "Farmacia Buttén",
+    "coords": [
+      18.80633,
+      -71.22965
+    ],
+    "radio": 600,
+    "color": "maroon"
+  },
+  {
+    "id": 16,
+    "nombre": "Farmacia GBC San Juan 2",
+    "coords": [
+      18.80675,
+      -71.2298
+    ],
+    "radio": 600,
+    "color": "chocolate"
+  },
+  {
+    "id": 17,
+    "nombre": "Farmacia San Martin",
+    "coords": [
+      18.80757,
+      -71.22903
+    ],
+    "radio": 600,
+    "color": "deeppink"
+  },
+  {
+    "id": 18,
+    "nombre": "Farmacia Carol",
+    "coords": [
+      18.80629,
+      -71.22935
+    ],
+    "radio": 600,
+    "color": "slateblue"
+  },
+  {
+    "id": 19,
+    "nombre": "Farmacia Binet",
+    "coords": [
+      18.80872,
+      -71.23133
+    ],
+    "radio": 600,
+    "color": "tomato"
+  },
+  {
+    "id": 20,
+    "nombre": "Farmacia Iguamed",
+    "coords": [
+      18.80766,
+      -71.22706
+    ],
+    "radio": 600,
+    "color": "seagreen"
+  },
+  {
+    "id": 21,
+    "nombre": "Farmacia Anacaona",
+    "coords": [
+      18.81307,
+      -71.23144
+    ],
+    "radio": 600,
+    "color": "dodgerblue"
+  },
+  {
+    "id": 22,
+    "nombre": "Farmacia Medicar GBC San Juan de la Maguana",
+    "coords": [
+      18.81693,
+      -71.22672
+    ],
+    "radio": 600,
+    "color": "crimson"
+  },
+  {
+    "id": 23,
+    "nombre": "Farmacia Eddy",
+    "coords": [
+      18.81136,
+      -71.2199
+    ],
+    "radio": 600,
+    "color": "darkorange"
+  },
+  {
+    "nombre": "Farmacia Vista del Rio",
+    "coords": [
+      18.798316,
+      -71.237052
+    ],
+    "radio": 600,
+    "color": "Azul",
+    "id": 24
+  }
 ]

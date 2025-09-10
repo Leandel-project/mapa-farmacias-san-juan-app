@@ -11,6 +11,13 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 let farmacias = [];
 let capas = {}; // guardará { id: { marker, circle } }
+let tempMarker = null; // Para el marcador temporal al hacer clic en el mapa
+
+// Limites aproximados de San Juan para la función de bloquear/buscar
+const sanJuanBounds = L.latLngBounds(
+  [18.78, -71.27], // suroeste
+  [18.83, -71.19]  // noreste
+);
 
 
 // Cargar farmacias (ruta relativa para evitar problemas de host)
@@ -18,8 +25,12 @@ async function cargarFarmacias() {
   try {
     const res = await fetch('/farmacias');
     if (!res.ok) throw new Error('Respuesta no OK');
-    farmacias = await res.json();
+    const farmaciasData = await res.json();
+    // Asegurarnos de que todas las farmacias sean visibles al cargar
+    farmacias = farmaciasData.map(f => ({ ...f, oculto: false }));
+
     mostrarFarmacias();
+    actualizarLista(); // Generar la lista en el modal
     // Centrar mapa automáticamente en todas las farmacias (si hay)
     if (farmacias.length) {
       const bounds = L.latLngBounds(farmacias.map(f => f.coords));
@@ -42,13 +53,14 @@ function mostrarFarmacias() {
   capas = {};
 
   farmacias.forEach((f, i) => {
+    // Si la farmacia está marcada como oculta, no la dibujamos en el mapa.
+    if (f.oculto) return;
+
     const color = f.color || PALETA[i % PALETA.length];
     const marker = L.marker(f.coords).addTo(map).bindPopup(`<b>${f.nombre}</b><br>Lat: ${f.coords[0]}, Lng: ${f.coords[1]}`);
     const circle = L.circle(f.coords, { radius: f.radio || 200, color, fillOpacity: 0.15 }).addTo(map);
     capas[f.id] = { marker, circle }; // usar id como key para evitar colisiones por nombre
   });
-
-  actualizarLista();
 }
 
 function actualizarLista() {
@@ -67,7 +79,7 @@ function actualizarLista() {
     checkbox.checked = !f.oculto;
     checkbox.addEventListener('change', () => {
       f.oculto = !checkbox.checked;
-      mostrarFarmacias();
+      mostrarFarmacias(); // Solo redibujamos el mapa, no hace falta recargar la lista.
     });
 
     const label = document.createElement('label');
@@ -126,6 +138,7 @@ async function eliminarFarmacia(id) {
       // quitar de la lista local y recargar vista
       farmacias = farmacias.filter(f => f.id != id);
       mostrarFarmacias();
+      actualizarLista(); // <-- CORRECCIÓN: Actualiza la lista en el modal
     } else {
       const txt = await res.text();
       throw new Error(txt || 'Error al eliminar');
@@ -137,8 +150,10 @@ async function eliminarFarmacia(id) {
 }
 
 // Event listeners DOM-ready
+// Unificamos toda la inicialización aquí
 document.addEventListener('DOMContentLoaded', () => {
   // botones UI
+  // Botones y modal
   const btnLista = document.getElementById('btnLista');
   const closeBtn = document.querySelector('.close-btn');
   const backdrop = document.getElementById('modal-backdrop');
@@ -149,13 +164,32 @@ document.addEventListener('DOMContentLoaded', () => {
   if (backdrop) backdrop.addEventListener('click', cerrarModal);
 
   // delegado para boton eliminar dentro de la lista
+  // Botón hamburguesa para el sidebar
+  const toggleSidebar = document.getElementById('toggleSidebar');
+  const sidebar = document.getElementById('sidebar');
+  if (toggleSidebar && sidebar) {
+    toggleSidebar.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+    });
+  }
+
+  // OPTIMIZACIÓN: Delegación de eventos para la lista de farmacias
+  const lista = document.getElementById('listaFarmacias');
   if (lista) {
     lista.addEventListener('click', async (e) => {
+      const item = e.target.closest('.farmacia-item');
+      if (!item) return;
+      const id = Number(item.dataset.id);
+      const farmacia = farmacias.find(f => f.id === id);
+
       if (e.target.classList.contains('eliminar-btn')) {
         const id = e.target.closest('.farmacia-item').dataset.id;
         if (confirm(`¿Eliminar farmacia ID ${id}?`)) {
+        if (confirm(`¿Eliminar farmacia "${farmacia.nombre}"?`)) {
           await eliminarFarmacia(id);
         }
+      } else if (e.target.classList.contains('editar-btn')) {
+        abrirFormularioEdicion(farmacia);
       }
     });
   }
@@ -175,34 +209,61 @@ function abrirFormularioEdicion(f) {
 }
 
 // Guardar (agregar o editar)
-document.getElementById("farmaciaForm").addEventListener("submit", async (e) => {
+async function guardarFarmacia(e) {
   e.preventDefault();
+
   const id = document.getElementById("farmaciaId").value;
-  const nombre = document.getElementById("farmaciaNombre").value;
-  const lat = parseFloat(document.getElementById("farmaciaLat").value);
-  const lng = parseFloat(document.getElementById("farmaciaLng").value);
-  const radio = parseInt(document.getElementById("farmaciaRadio").value);
-  const color = document.getElementById("farmaciaColor").value;
+  const farmaciaData = {
+    nombre: document.getElementById("farmaciaNombre").value,
+    coords: [
+      parseFloat(document.getElementById("farmaciaLat").value),
+      parseFloat(document.getElementById("farmaciaLng").value)
+    ],
+    radio: parseInt(document.getElementById("farmaciaRadio").value),
+    color: document.getElementById("farmaciaColor").value,
+  };
 
-  if (id) {
-    // EDITAR en memoria
-    const idx = farmacias.findIndex(f => f.id == id);
-    if (idx !== -1) {
-      farmacias[idx] = { ...farmacias[idx], nombre, coords:[lat,lng], radio, color };
+  try {
+    const esEdicion = !!id;
+    const url = esEdicion ? `/farmacias/${id}` : '/farmacias';
+    const method = esEdicion ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(farmaciaData),
+    });
+
+    if (!res.ok) {
+      // El servidor devolvió un error. Intentamos leer el cuerpo para dar más detalles.
+      const errorText = await res.text();
+      let errorMessage;
+      try {
+        // El backend debería enviar errores en formato JSON. Intentamos parsearlo.
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.error || `Error al ${esEdicion ? 'editar' : 'agregar'}`;
+      } catch (e) {
+        // Si falla el parseo, es porque la respuesta no era JSON (probablemente HTML).
+        console.error("La respuesta del servidor no es JSON:", errorText);
+        errorMessage = `El servidor devolvió un error inesperado (Status: ${res.status}). Revisa la consola del navegador para más detalles.`;
+      }
+      throw new Error(errorMessage);
     }
-  } else {
-    // AGREGAR nueva
-    const nuevoId = farmacias.length ? Math.max(...farmacias.map(f => f.id)) + 1 : 1;
-    farmacias.push({ id: nuevoId, nombre, coords:[lat,lng], radio, color });
+
+    // Limpiar formulario y recargar todo para reflejar los cambios desde el servidor
+    e.target.reset();
+    document.getElementById("farmaciaId").value = "";
+    
+    alert(`Farmacia ${esEdicion ? 'editada' : 'agregada'} con éxito.`);
+    await cargarFarmacias(); // Recarga los datos desde el servidor para tener la lista actualizada
+
+  } catch (err) {
+    console.error('Error guardando farmacia:', err);
+    alert(`No se pudo guardar la farmacia: ${err.message}`);
   }
+}
 
-  mostrarFarmacias();
-  actualizarLista();
-
-  // limpiar form
-  e.target.reset();
-  document.getElementById("farmaciaId").value = "";
-})
+document.getElementById("farmaciaForm").addEventListener("submit", guardarFarmacia);
 
 // Toggle del sidebar (botón hamburguesa)
 document.addEventListener('DOMContentLoaded', () => {
@@ -231,6 +292,7 @@ btnBloquear.addEventListener('click', () => {
       [18.83, -71.19]  // noreste
     );
     map.setMaxBounds(bounds);
+    map.setMaxBounds(sanJuanBounds);
 
     // Limitar zoom máximo y mínimo si quieres
     map.setMinZoom(13); // no alejarse demasiado
@@ -275,6 +337,39 @@ document.getElementById('btnBuscar').addEventListener('click', () => {
   if (bloqueado) map.setMaxBounds(sanJuanBounds);
 });
 
+// --- NUEVA FUNCIONALIDAD: Obtener coordenadas al hacer clic en el mapa ---
+map.on('click', function(e) {
+  // Evita poner un marcador si se hace clic sobre un marcador existente
+  if (e.originalEvent.target.classList.contains('leaflet-marker-icon')) {
+    return;
+  }
+
+  const lat = e.latlng.lat.toFixed(6); // Coordenadas con 6 decimales para precisión
+  const lng = e.latlng.lng.toFixed(6);
+
+  // Rellenar automáticamente los campos del formulario en el modal
+  document.getElementById("farmaciaLat").value = lat;
+  document.getElementById("farmaciaLng").value = lng;
+
+  // Si ya existe un marcador temporal, lo eliminamos
+  if (tempMarker) {
+    map.removeLayer(tempMarker);
+  }
+
+  // Creamos un nuevo marcador temporal en el punto del clic
+  tempMarker = L.marker(e.latlng).addTo(map);
+
+  // Mostramos un popup con la información y lo abrimos
+  tempMarker.bindPopup(`<b>Coordenadas seleccionadas:</b><br>Lat: ${lat}<br>Lng: ${lng}<br><br><i>Valores copiados al formulario.</i>`).openPopup();
+
+  // Cuando el popup se cierre, eliminamos el marcador temporal
+  tempMarker.on('popupclose', () => {
+    if (tempMarker) {
+      map.removeLayer(tempMarker);
+      tempMarker = null;
+    }
+  });
+});
+
 // Inicializar carga
 cargarFarmacias();
-
