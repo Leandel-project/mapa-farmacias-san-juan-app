@@ -98,4 +98,27 @@ app.delete('/farmacias/:id', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor iniciado en puerto ${PORT}`));
+
+const startServer = (port) => {
+  app.listen(port)
+    .on('listening', async () => {
+      console.log(`Servidor iniciado en puerto ${port}`);
+      try {
+        // Escribe el puerto en un archivo para que el script .bat lo pueda leer
+        await fs.writeFile(path.join(__dirname, '.port'), port.toString());
+      } catch (writeErr) {
+        console.error('Error escribiendo archivo .port:', writeErr);
+      }
+    })
+    .on('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.log(`Puerto ${port} en uso, intentando con ${port + 1}`);
+        startServer(port + 1);
+      } else {
+        console.error('Error fatal al iniciar el servidor:', err);
+        process.exit(1);
+      }
+    });
+};
+
+startServer(PORT);

@@ -1,0 +1,6 @@
+# Dependencias de Node, se instalan en el servidor
+/node_modules
+
+# Archivos temporales locales
+.port
+node-installer.msi

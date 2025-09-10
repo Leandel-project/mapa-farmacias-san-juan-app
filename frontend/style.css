@@ -161,3 +161,12 @@ body, html {
 #sidebar {
   transition: all 0.3s;
 }
+
+/* --- ESTILOS PARA DISPOSITIVOS MOVILES --- */
+@media (max-width: 768px) {
+    /* En móvil, el mapa siempre ocupa toda la pantalla,
+       incluso cuando el sidebar está visible (se superpone). */
+    #map {
+        left: 0;
+    }
+}
